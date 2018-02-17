@@ -20,6 +20,29 @@ export class CommentPage {
   myComment: Comment;
   defaultRating = 3;
 
+  // I hope this is ok - same as from previous course/assignment for angular
+  formErrors = {
+    'author': '',
+    'rating': '5',
+    'comment': ''
+  };
+
+  validationMessages = {
+    'author': {
+      'required': 'Author Name is required.',
+      'minlength': 'Author Name must be at least 2 characters long.',
+      'maxlength': 'Author Name cannot be more than 25 characters long.'
+    },
+    'comment': {
+      'required': 'Comment is required.',
+      'minlength': 'Comment must be at least 2 characters long.'
+    },
+    'rating': {
+      'required': 'Rating is required.',
+      'pattern': 'Rating must contain only numbers.'
+    }
+  };
+
   constructor(public navCtrl: NavController, public navParams: NavParams,
               public viewCtrl: ViewController,
               private formBuilder: FormBuilder) {
@@ -28,10 +51,38 @@ export class CommentPage {
 
   createForm() {
     this.commentForm = this.formBuilder.group({
-      author: ['', Validators.required],
-      rating: this.defaultRating,
-      comment: ['', Validators.required, Validators.minLength(4)]
+      author: ['', [Validators.required, Validators.minLength(2), Validators.maxLength(25)]],
+      rating: [this.defaultRating, [Validators.required, Validators.pattern]],
+      comment: ['', [Validators.required, Validators.minLength(4)]]
     });
+
+    this.commentForm.valueChanges
+      .subscribe(data => this.onValueChanged(data));
+
+    this.onValueChanged(); // (re)set validation messages now
+  }
+
+  get author() { return this.commentForm.get('author');}
+  get rating() { return this.commentForm.get('rating');}
+  get comment() { return this.commentForm.get('comment');}
+
+  onValueChanged(data?: any) {
+    console.log('onValueChanged: ', data);
+    if (!this.commentForm) {
+      return;
+    }
+    const form = this.commentForm;
+    for (const field in this.formErrors) {
+      // clear previous error message (if any)
+      this.formErrors[field] = '';
+      const control = form.get(field);
+      if (control && control.dirty && !control.valid) {
+        const messages = this.validationMessages[field];
+        for (const key in control.errors) {
+          this.formErrors[field] += messages[key] + ' ';
+        }
+      }
+    }
   }
 
 

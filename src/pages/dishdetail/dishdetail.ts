@@ -35,14 +35,23 @@ export class DishdetailPage {
               private favoriteservice: FavoriteProvider) {
     this.dish = navParams.get('dish');
     this.favorite = favoriteservice.isFavorite(this.dish.id);
-    this.numcomments = this.dish.comments.length;
-    let total = 0;
-    this.dish.comments.forEach(comment => total += comment.rating);
-    this.avgstars = (total / this.numcomments).toFixed(2);
+
+    this.recalcAvgStars();
+    // this.numcomments = this.dish.comments.length;
+    // let total = 0;
+    // this.dish.comments.forEach(comment => total += comment.rating);
+    // this.avgstars = (total / this.numcomments).toFixed(2);
   }
 
   ionViewDidLoad() {
     console.log('ionViewDidLoad DishdetailPage');
+  }
+
+  recalcAvgStars () {
+    this.numcomments = this.dish.comments.length;
+    let total = 0;
+    this.dish.comments.forEach(comment => total += comment.rating);
+    this.avgstars = (total / this.numcomments).toFixed(2);
   }
 
   addToFavorites() {
@@ -79,6 +88,7 @@ export class DishdetailPage {
             modal.onDidDismiss(data => {
               console.log(data);
               this.dish.comments.push(data);
+              this.recalcAvgStars();
             });
             modal.present();
           }

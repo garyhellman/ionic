@@ -20,6 +20,15 @@
 <ion-content padding>
 
   <form [formGroup]="commentForm" (ngSubmit)="onSubmit()">
+    <div *ngIf="author.invalid && (author.dirty || author.touched)"
+         class="ion-ios-alert ion-alert-danger">
+      <div *ngIf="author.errors.required">
+        Name is required.
+      </div>
+      <div *ngIf="author.errors.minlength">
+        Name must be at least 2 characters long.
+      </div>
+    </div>
     <ion-item>
       <ion-label floating>Author</ion-label>
       <ion-input formControlName="author">
@@ -32,6 +41,15 @@
         <ion-icon range-right name="happy"></ion-icon>
       </ion-range>
     </ion-item>
+    <div *ngIf="comment.invalid && (comment.dirty || comment.touched)"
+         class="ion-ios-alert ion-alert-danger">
+      <div *ngIf="comment.errors.required">
+        Comment is required.
+      </div>
+      <div *ngIf="comment.errors.minlength">
+        Comment must be at least 4 characters long.
+      </div>
+    </div>
     <ion-item>
       <ion-label floating>Comment</ion-label>
       <ion-textarea formControlName="comment" rows="12"></ion-textarea>
