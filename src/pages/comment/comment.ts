@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import {Component} from '@angular/core';
 import {IonicPage, NavController, NavParams, ViewController} from 'ionic-angular';
 import {FormBuilder, FormGroup, Validators} from "@angular/forms";
 import {Comment} from "../../shared/comment";
@@ -20,13 +20,15 @@ export class CommentPage {
   myComment: Comment;
   defaultRating = 3;
 
-  // I hope this is ok - same as from previous course/assignment for angular
+  // reused from previous course/assignment for angular
   formErrors = {
     'author': '',
     'rating': '5',
     'comment': ''
   };
 
+  // reused from previous course/assignment for angular
+  // not really used in form display
   validationMessages = {
     'author': {
       'required': 'Author Name is required.',
@@ -35,7 +37,7 @@ export class CommentPage {
     },
     'comment': {
       'required': 'Comment is required.',
-      'minlength': 'Comment must be at least 2 characters long.'
+      'minlength': 'Comment must be at least 4 characters long.'
     },
     'rating': {
       'required': 'Rating is required.',
@@ -56,18 +58,29 @@ export class CommentPage {
       comment: ['', [Validators.required, Validators.minLength(4)]]
     });
 
+    // reused from previous course/assignment for angular
     this.commentForm.valueChanges
       .subscribe(data => this.onValueChanged(data));
 
     this.onValueChanged(); // (re)set validation messages now
   }
 
-  get author() { return this.commentForm.get('author');}
-  get rating() { return this.commentForm.get('rating');}
-  get comment() { return this.commentForm.get('comment');}
+  get author() {
+    return this.commentForm.get('author');
+  }
 
+  get rating() {
+    return this.commentForm.get('rating');
+  }
+
+  get comment() {
+    return this.commentForm.get('comment');
+  }
+
+  // reused from previous course/assignment for angular
+  // not really implemented
   onValueChanged(data?: any) {
-    console.log('onValueChanged: ', data);
+    // console.log('onValueChanged: ', data);
     if (!this.commentForm) {
       return;
     }
@@ -85,13 +98,12 @@ export class CommentPage {
     }
   }
 
-
   ionViewDidLoad() {
     console.log('ionViewDidLoad CommentPage');
   }
 
-
   dismiss() {
+    console.log('dismiss CommentPage');
     this.viewCtrl.dismiss();
   }
 

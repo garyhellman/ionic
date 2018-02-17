@@ -37,10 +37,6 @@ export class DishdetailPage {
     this.favorite = favoriteservice.isFavorite(this.dish.id);
 
     this.recalcAvgStars();
-    // this.numcomments = this.dish.comments.length;
-    // let total = 0;
-    // this.dish.comments.forEach(comment => total += comment.rating);
-    // this.avgstars = (total / this.numcomments).toFixed(2);
   }
 
   ionViewDidLoad() {
@@ -75,8 +71,6 @@ export class DishdetailPage {
           handler: () => {
             console.log('Add to Favorites clicked');
             this.addToFavorites();
-            // let navTransition = actionSheet.dismiss();
-            // return false;
           }
         },
         {
@@ -84,28 +78,19 @@ export class DishdetailPage {
           handler: () => {
             console.log('Add a Comment clicked');
             let modal = this.modalCtrl.create(CommentPage);
-            // let modal = this.modalCtrl.create(ReservationPage);
             modal.onDidDismiss(data => {
-              console.log(data);
-              this.dish.comments.push(data);
-              this.recalcAvgStars();
+              console.log('onDidDismiss');
+              if(data) {
+                console.log(data);
+                this.dish.comments.push(data);
+                this.recalcAvgStars();
+              } else {
+                console.log('no data ...');
+              }
             });
             modal.present();
           }
         },
-        // {
-        //   text: 'Destructive',
-        //   role: 'destructive',
-        //   handler: () => {
-        //     console.log('Destructive clicked');
-        //   }
-        // },
-        // {
-        //   text: 'Archive',
-        //   handler: () => {
-        //     console.log('Archive clicked');
-        //   }
-        // },
         {
           text: 'Cancel',
           role: 'cancel',
